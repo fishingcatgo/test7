@@ -1,12 +1,13 @@
 
 # 1、项目结构
-- |-- security
-- |   |-- logs #日志目录
-- |   |   `-- secure.log
-- |   |-- main.py  #服务的python脚本
-- |   |-- start.sh #启动文件
-- |   |-- utils #工具类
-- |   |   `-- logconfig.py
+```plaintext
+project-root
+|   |-- logs #日志目录
+|   |   `-- secure.log
+|   |-- main.py  #服务的python脚本
+|   |-- start.sh #启动文件
+|   |-- utils #工具类
+|   |   `-- logconfig.py
 
 # 2、安装相关依赖
 pip install -r requirements.txt
