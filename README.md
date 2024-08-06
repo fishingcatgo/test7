@@ -8,7 +8,7 @@ project-root
 |   |-- start.sh #启动文件
 |   |-- utils #工具类
 |   |   `-- logconfig.py
-
+```
 # 2、安装相关依赖
 pip install -r requirements.txt
 
