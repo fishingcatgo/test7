@@ -26,7 +26,12 @@ export Dat_env=/nfs2/zhaochuan.cai/czc_test/datrie/pydatrie/filter_pydatrie.dat 
 export Port=8888 #服务端口
 #gunicorn设置多个工作进程
 # 【调试】- 请注意！--reload 参数仅应在开发时使用，不建议在生产环境中使用。
-gunicorn -w 5 -k uvicorn.workers.UvicornWorker --timeout 600 main:app --bind 0.0.0.0:$Port --reload --log-level debug --access-logfile ./logs/gunicorn_output.log
+# gunicorn -w 5 -k uvicorn.workers.UvicornWorker --timeout 600 main:app --bind 0.0.0.0:$Port --reload --log-level debug --access-logfile ./logs/gunicorn_output.log
 
 # 【生产】
 # nohup gunicorn -w 5 -k uvicorn.workers.UvicornWorker --timeout 600 main:app --bind 0.0.0.0:8888  --log-level debug --access-logfile ../logs/gunicorn_output.log >> ./logs/log_scure.log 2>&1 &
+
+
+#生产，可设置多个工作进程，argparse不支持
+gunicorn  main:app  --workers 3 --worker-class uvicorn.workers.UvicornWorker --bind 0.0.0.0:8888  --reload --log-level debug --access-logfile ./logs/chatapi_output.log1 --timeout 600
+  

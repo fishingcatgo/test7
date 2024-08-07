@@ -26,7 +26,7 @@ class MultiProcessingTimedRotatingFileHandler(logging.Handler):
                         self.log_file_name, when=self.when, 
                         interval=self.interval, backupCount=self.backupCount
                     )
-                    handler.setFormatter(logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s",'%Y-%m-%d %H:%M:%S'))
+                    handler.setFormatter(logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s"))
                     logger.addHandler(handler)
                 if record:
                     logger.handle(record)
@@ -50,7 +50,7 @@ def create_logger(name, log_file_name):
 
 
 # 创建日志记录器，可创建多个
-logger = create_logger("secure_logger", "logs/secure.log")
+logger = create_logger("secureapi_logger", "logs/secure.log")
 # logger_secure = create_logger("llm_logger", "./logs/llm.log")
 # logger_api = create_logger("api_logger", "./logs/chat_api.log")
 
