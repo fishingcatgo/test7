@@ -109,54 +109,55 @@ async def validation_exception_handler(request, exc):
         )
 
 
-# 2、解决打包中文编码问题
-import sys
-import codecs
-# 确保标准输出和错误输出使用UTF-8编码
-sys.stdout = codecs.getwriter("utf-8")(sys.stdout.detach())
-sys.stderr = codecs.getwriter("utf-8")(sys.stderr.detach())
+# 2、解决打包中文编码问题,只在cx_Freeze打包的时候用,部署不能用,影响日志输出
+# import sys
+# import codecs
+# # 确保标准输出和错误输出使用UTF-8编码
+# sys.stdout = codecs.getwriter("utf-8")(sys.stdout.detach())
+# sys.stderr = codecs.getwriter("utf-8")(sys.stderr.detach())
 
-#3、给路径参数赋值
-#命领行参数获取
-def get_Parser():
-    # 定义一个ArgumentParser实例:
-    parser = argparse.ArgumentParser(
-        prog='mt_security', # 程序名
-        description='mt_security relevant arg.', # 描述
-        epilog='Mt ArgumentParser, 2024' # 说明信息
-    )
-     # 允许用户输入简写的-x:
-    parser.add_argument('-m', '--model',help='model path parameter', required=False,default=None)
-    parser.add_argument('-d', '--dat', help='Dat tree path parameter',required=False,default=None)
-    parser.add_argument('-p', '--port', help='api port parameter',required=False,default='8888',type=int)
+#3、给路径参数赋值，多进程不支持命令行参数argparse，测试用
+# #命领行参数获取
+# def get_Parser():
+#     # 定义一个ArgumentParser实例:
+#     parser = argparse.ArgumentParser(
+#         prog='mt_security', # 程序名
+#         description='mt_security relevant arg.', # 描述
+#         epilog='Mt ArgumentParser, 2024' # 说明信息
+#     )
+#      # 允许用户输入简写的-x:
+#     parser.add_argument('-m', '--model',help='model path parameter', required=False,default=None)
+#     parser.add_argument('-d', '--dat', help='Dat tree path parameter',required=False,default=None)
+#     parser.add_argument('-p', '--port', help='api port parameter',required=False,default='8888',type=int)
 
-    # 解析参数:
-    args = parser.parse_args()
-    print('解析完参数：',args)
-    return args
+#     # 解析参数:
+#     args = parser.parse_args()
+#     print('解析完参数：',args)
+#     return args
 
-args=get_Parser()
+# args=get_Parser()
 
 
 #环境变量获取
-Model_env = os.getenv('Model')
-Dat_env= os.getenv('Dat')
-Port_env= os.getenv('Portmt')
+Model_env = os.getenv('Model_env')
+Dat_env= os.getenv('Dat_env')
+Port_env= os.getenv('Port_env')
 print('环境变量：',Model_env,Dat_env,Port_env)
 
-port=Port_env if Port_env else args.port
+# port=Port_env if Port_env else args.port
 
-model_path='/nfs2/jiyuan.chen/Security-Model/model/server_test_model'
-dat_path="/nfs2/zhaochuan.cai/czc_test/datrie/pydatrie/filter_pydatrie.dat"
+#测试用
+# model_path='/nfs2/jiyuan.chen/Security-Model/model/server_test_model'
+# dat_path="/nfs2/zhaochuan.cai/czc_test/datrie/pydatrie/filter_pydatrie.dat"
 
-# model_path=''
-# dat_path=''
+model_path=''
+dat_path=''
 
 # 选取存在的路径
-for path in [args.model,Model_env,model_path] :
+for path in [Model_env,model_path] :
     if path and os.path.exists(path): model_path=path; break
 
-for path in [args.dat,Dat_env,dat_path] :
+for path in [Dat_env,dat_path] :
     if path and os.path.exists(path): dat_path=path; break
 
 print('模型路径：',model_path)
@@ -232,7 +233,7 @@ async def create_secure(secu_data: SecureRequest) -> SecureRespond:
         
         #Bert模型批量分类
         data_allbatch=[]
-        batch_size=2 #对数据分批处理
+        batch_size=6 #对数据分批处理
         for key,bat_data in enumerate([secu_data.input[i:i + batch_size] for i in range(0, len(secu_data.input), batch_size)]):
             print('标记：',key*batch_size)
             print(f'第{key}个',bat_data)

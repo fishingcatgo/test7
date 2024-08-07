@@ -26,7 +26,7 @@ class MultiProcessingTimedRotatingFileHandler(logging.Handler):
                         self.log_file_name, when=self.when, 
                         interval=self.interval, backupCount=self.backupCount
                     )
-                    handler.setFormatter(logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s"))
+                    handler.setFormatter(logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s",'%Y-%m-%d %H:%M:%S'))
                     logger.addHandler(handler)
                 if record:
                     logger.handle(record)
