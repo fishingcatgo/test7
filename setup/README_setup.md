@@ -1,5 +1,12 @@
 
-arm架构部署说明
+# 1、打包
+打包相关设置在setup.py中(cx_Freeze打包中文编码与logger冲突，打包的时候要注释掉logger,放开中文编码注释)
+打包命令：python setup.py build
+运行命令：cd xxx/build/exe.xxx && nohup bash start.sh >> log_scure.log 2>&1 &
+
+# 2、打包部署说明
+
+```
 位置：/home/apollo/czc_use
 1、项目：
 Reranker_ues1  embedding项目 文件路径：/home/apollo/czc_use/Reranker_ues1/build/exe.linux-aarch64-3.10/emb_server  (启动是当前目录下start.sh)
@@ -44,3 +51,32 @@ curl --location 'http://192.168.5.249:8888/v1/security' \
 ]
 }
 '
+```
+
+# 3、压缩上传到oss
+```
+# 安装：
+wget https://dl.min.io/client/mc/release/linux-arm64/mc
+mv mc /usr/local/bin/mc
+chmod +x /usr/local/bin/mc
+ 
+# 初始化：
+mc config host add myoss https://oss.mthreads.com BU29LV1KSKTTNC3E6TYL fROgewmmYzaG1Et9J4PjN8FEU0b+CYa+Or6G1JkA
+ 
+# 查看桶：
+mc ls myoss
+ 
+# 上传
+mc cp emb_v0.01.tar.gz myoss/ai-product/MusaChat/package/emb/
+mc cp security_v0.01.tar.gz myoss/ai-product/MusaChat/package/security/
+
+# 下载
+wget https://oss.mthreads.com/ai-product/MusaChat/package/security/security_v0.01.tar.gz
+wget https://oss.mthreads.com/ai-product/MusaChat/package/emb/emb_v0.01.tar.gz
+
+
+tar -czvf my_folder.tar.gz my_folder
+tar -xzvf my_folder.tar.gz 
+
+
+```
